@@ -7,7 +7,7 @@ class Contact {
   String phone;
   String image;
 
-    Contact();
+  Contact();
 
   Contact.fromMap(Map map) {
     id = map[ContactMigration.ID_COLUMN];

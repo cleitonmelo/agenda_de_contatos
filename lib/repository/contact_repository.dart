@@ -8,7 +8,7 @@ class ContactRepository{
   Contact contact;
   DbConnection connection = DbConnection();
 
-  ContactRepository({@required this.contact});
+  ContactRepository({this.contact});
 
   Future<Contact> save() async {
     Database db = await connection.database;
