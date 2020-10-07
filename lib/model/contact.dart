@@ -1,4 +1,4 @@
-import 'package:agenda_de_contatos/migration/contact.dart';
+import 'package:agenda_de_contatos/migration/create_contact.dart';
 
 class Contact {
   int id;
@@ -6,6 +6,8 @@ class Contact {
   String email;
   String phone;
   String image;
+
+    Contact();
 
   Contact.fromMap(Map map) {
     id = map[ContactMigration.ID_COLUMN];

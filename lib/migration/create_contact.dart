@@ -13,7 +13,7 @@ class ContactMigration{
     ];
   }
 
-  final String initialScript = '''
+  static final createTable = '''
     CREATE TABLE $TABLE_NAME (
       $ID_COLUMN INTEGER PRIMARY KEY AUTOINCREMENT,
       $NAME_COLUMN TEXT not null,
