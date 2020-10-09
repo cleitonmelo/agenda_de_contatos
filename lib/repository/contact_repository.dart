@@ -1,7 +1,6 @@
 import 'package:agenda_de_contatos/migration/create_contact.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/service/db.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ContactRepository{

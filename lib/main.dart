@@ -5,5 +5,6 @@ void main() {
   runApp(MaterialApp(
     title: "Agenda de Contatos",
     home: Home(),
+    debugShowCheckedModeBanner: false,
   ));
 }
