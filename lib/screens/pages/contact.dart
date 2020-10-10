@@ -52,7 +52,9 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: popRequest,
+      child: Scaffold(
         appBar: AppBar(
           title: Text(contact.name ?? "Novo Contato",
               style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0)),
@@ -70,7 +72,7 @@ class _ContactPageState extends State<ContactPage> {
         body: SingleChildScrollView(
           padding: EdgeInsets.all(10.0),
           child: form(),
-        ));
+        )));
   }
 
   Widget form() {
@@ -165,6 +167,40 @@ class _ContactPageState extends State<ContactPage> {
 
   bool _isValidName() {
     return _nameController.text != null && _nameController.text.isNotEmpty;
+  }
+
+  Future<bool> popRequest(){
+    if(_edited){
+      showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              title: Text("Descartar Alterações?", style: GoogleFonts.abel(color: Colors.white, fontWeight: FontWeight.bold)),
+              content: Text("Ao sair as alterações serão perdidas.", style: GoogleFonts.abel(color: Colors.white, fontWeight: FontWeight.bold)),
+              backgroundColor: Colors.deepPurple,
+              actions: [
+                FlatButton(
+                  child: Text("Cancelar", style: GoogleFonts.abel(color: Colors.white)),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Sim", style: GoogleFonts.abel(color: Colors.white)),
+                  onPressed: (){
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          }
+      );
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 
 }
