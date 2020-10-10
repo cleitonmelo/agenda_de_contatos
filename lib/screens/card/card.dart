@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:agenda_de_contatos/helpers/page_helper.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
+import 'package:agenda_de_contatos/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget cardContact(BuildContext context, Contact contact) {
+Widget cardContact(BuildContext context, Contact contact, onTap) {
   return GestureDetector(
-      onTap: () {
-        PageHelper(context).showPageContact(contact: contact);
+      onTap: (){
+        onTap(contact: contact);
       },
       child: Container(
         child: Card(

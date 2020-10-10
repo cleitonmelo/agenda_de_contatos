@@ -19,12 +19,14 @@ class Contact {
 
   Map toMap() {
     Map<String, dynamic> map = {
-      ContactMigration.ID_COLUMN : id != null ? id : null,
-      ContactMigration.NAME_COLUMN : name,
-      ContactMigration.EMAIL_COLUMN : email,
-      ContactMigration.PHONE_COLUMN : phone,
-      ContactMigration.IMAGE_COLUMN : image
+      ContactMigration.NAME_COLUMN: name,
+      ContactMigration.EMAIL_COLUMN: email,
+      ContactMigration.PHONE_COLUMN: phone,
+      ContactMigration.IMAGE_COLUMN: image
     };
+    if ( id != null){
+      map[ContactMigration.ID_COLUMN] = id;
+    }
     return map;
   }
 

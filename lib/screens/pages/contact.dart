@@ -19,6 +19,7 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   bool _edited = false;
   Contact contact;
+  final nameFocus = FocusNode();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -47,7 +48,7 @@ class _ContactPageState extends State<ContactPage> {
     this._initContactPage();
   }
 
-  void hasEdited() => this._edited = true;
+  void hasEdited() => _edited = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class _ContactPageState extends State<ContactPage> {
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: this._onPressed,
           child: Icon(
             Icons.save,
             color: Colors.white,
@@ -114,6 +115,7 @@ class _ContactPageState extends State<ContactPage> {
               padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _nameController,
+                focusNode: nameFocus,
                 decoration:
                     Style.inputDecoration(text: "Nome", icon: Icons.person_pin),
                 style: GoogleFonts.abel(color: Colors.white, fontSize: 20.0),
@@ -153,4 +155,16 @@ class _ContactPageState extends State<ContactPage> {
       ),
     );
   }
+
+  void _onPressed(){
+    if(_isValidName()){
+      Navigator.pop(context,contact);
+    }
+    FocusScope.of(context).requestFocus(nameFocus);
+  }
+
+  bool _isValidName() {
+    return _nameController.text != null && _nameController.text.isNotEmpty;
+  }
+
 }

@@ -8,6 +8,7 @@ Agenda de contatos em *flutter* utilizando a linguagem *dart*
 ### Widgets
  - Card
  - ListTile
+ - Navigator
 
 ### Dependências Extras
     - sqflite: ^1.1.5
