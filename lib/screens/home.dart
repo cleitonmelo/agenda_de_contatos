@@ -1,3 +1,4 @@
+import 'package:agenda_de_contatos/enum/ContactOrder.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/repository/contact_repository.dart';
 import 'package:agenda_de_contatos/screens/card/card.dart';
@@ -28,6 +29,21 @@ class _HomeState extends State<Home> {
             style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0)),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
+              const PopupMenuItem<OrderOptions>(
+                child: Text("Ordernar de A-Z"),
+                value: OrderOptions.orderAsc,
+              ),
+              const PopupMenuItem<OrderOptions>(
+                child: Text("Ordernar de Z-A"),
+                value: OrderOptions.orderDesc,
+              )
+            ],
+            onSelected: _orderList,
+          )
+        ],
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
@@ -51,46 +67,48 @@ class _HomeState extends State<Home> {
         });
   }
 
-  void showOption(BuildContext context, Contact contact){
-    showModalBottomSheet(context: context, builder: (context){
-      return BottomSheet(
-          onClosing: (){},
-          builder: (context){
-            return Container(
-              color: Colors.deepPurple,
-              padding: EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FlatButton(
-                      child: Icon(Icons.edit, color: Colors.white),
-                      onPressed: (){
-                        Navigator.pop(context);
-                        showPageContact(contact: contact);
-                      },
-                    ),
-                    FlatButton(
-                      child: Icon(Icons.call, color: Colors.white),
-                      onPressed: (){
-                        launch("tel: ${contact.phone}");
-                        Navigator.pop(context);
-                      },
-                    ),
-                    FlatButton(
-                      child: Icon(Icons.delete, color: Colors.white),
-                      onPressed: (){
-                        deleteContact(context, contact);
-                      },
-                    ),
-                  ],
-                ),
-            );
-          });
-    });
+  void showOption(BuildContext context, Contact contact) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return BottomSheet(
+              onClosing: () {},
+              builder: (context) {
+                return Container(
+                  color: Colors.deepPurple,
+                  padding: EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FlatButton(
+                        child: Icon(Icons.edit, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showPageContact(contact: contact);
+                        },
+                      ),
+                      FlatButton(
+                        child: Icon(Icons.call, color: Colors.white),
+                        onPressed: () {
+                          launch("tel: ${contact.phone}");
+                          Navigator.pop(context);
+                        },
+                      ),
+                      FlatButton(
+                        child: Icon(Icons.delete, color: Colors.white),
+                        onPressed: () {
+                          deleteContact(context, contact);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              });
+        });
   }
 
-  void deleteContact(BuildContext context, Contact contact) async{
-    if( contact != null ){
+  void deleteContact(BuildContext context, Contact contact) async {
+    if (contact != null) {
       await ContactRepository(contact: contact).delete();
     }
     setState(() {
@@ -99,20 +117,37 @@ class _HomeState extends State<Home> {
     Navigator.pop(context);
   }
 
-  void showPageContact({Contact contact}) async{
-    final contactEditor = await Navigator.push(context,
-         MaterialPageRoute(
+  void showPageContact({Contact contact}) async {
+    final contactEditor = await Navigator.push(
+        context,
+        MaterialPageRoute(
           builder: (context) => ContactPage(contact: contact),
-     ));
-    if(contactEditor != null) {
-      if( contact != null ){
+        ));
+    if (contactEditor != null) {
+      if (contact != null) {
         await ContactRepository(contact: contactEditor).update();
-      } else{
+      } else {
         await ContactRepository(contact: contactEditor).save();
       }
     }
     setState(() {
       ContactRepository().fetchAll().then((values) => contacts = values);
+    });
+  }
+
+  void _orderList(OrderOptions result) {
+    switch (result) {
+      case OrderOptions.orderAsc:
+        contacts.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+      case OrderOptions.orderDesc:
+        contacts.sort(
+                (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
+        break;
+    }
+    setState(() {
+
     });
   }
 }

@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:agenda_de_contatos/helpers/page_helper.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
-import 'package:agenda_de_contatos/screens/home.dart';
 import 'package:agenda_de_contatos/screens/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +17,8 @@ class _ContactPageState extends State<ContactPage> {
   bool _edited = false;
   Contact contact;
   final nameFocus = FocusNode();
+
+  final ImagePicker _picker = ImagePicker();
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -54,26 +52,26 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: popRequest,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(contact.name ?? "Novo Contato",
-              style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0)),
-          backgroundColor: Colors.deepPurple,
-          centerTitle: true,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: this._onPressed,
-          child: Icon(
-            Icons.save,
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.deepPurple,
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(10.0),
-          child: form(),
-        )));
+        onWillPop: popRequest,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(contact.name ?? "Novo Contato",
+                  style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0)),
+              backgroundColor: Colors.deepPurple,
+              centerTitle: true,
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: this._onPressed,
+              child: Icon(
+                Icons.save,
+                color: Colors.white,
+              ),
+              backgroundColor: Colors.deepPurple,
+            ),
+            body: SingleChildScrollView(
+              padding: EdgeInsets.all(10.0),
+              child: form(),
+            )));
   }
 
   Widget form() {
@@ -82,10 +80,10 @@ class _ContactPageState extends State<ContactPage> {
         child: Column(
           children: [
             GestureDetector(
-              child: imageForm(),
-              onTap: (){
-                ImagePicker.pickImage(source: ImageSource.camera).then((file) {
-                  if(file != null){
+              child: Style.imageCircle(image: contact.image),
+              onTap: () {
+                _picker.getImage(source: ImageSource.camera).then((file) {
+                  if (file != null) {
                     setState(() {
                       contact.image = file.path;
                     });
@@ -104,19 +102,6 @@ class _ContactPageState extends State<ContactPage> {
                 child: detailForm()),
           ],
         ));
-  }
-
-  Widget imageForm() {
-    return Container(
-      width: 200.0,
-      height: 200.0,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: contact.image == null
-                  ? AssetImage("images/person.png")
-                  : Image.file(File(contact.image), fit: BoxFit.cover),
-      ),
-    );
   }
 
   Widget detailForm() {
@@ -169,9 +154,9 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  void _onPressed(){
-    if(_isValidName()){
-      Navigator.pop(context,contact);
+  void _onPressed() {
+    if (_isValidName()) {
+      Navigator.pop(context, contact);
     }
     FocusScope.of(context).requestFocus(nameFocus);
   }
@@ -180,38 +165,42 @@ class _ContactPageState extends State<ContactPage> {
     return _nameController.text != null && _nameController.text.isNotEmpty;
   }
 
-  Future<bool> popRequest(){
-    if(_edited){
+  Future<bool> popRequest() {
+    if (_edited) {
       showDialog(
           context: context,
-          builder: (BuildContext context){
+          builder: (BuildContext context) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
-              title: Text("Descartar Alterações?", style: GoogleFonts.abel(color: Colors.white, fontWeight: FontWeight.bold)),
-              content: Text("Ao sair as alterações serão perdidas.", style: GoogleFonts.abel(color: Colors.white, fontWeight: FontWeight.bold)),
+              title: Text("Descartar Alterações?",
+                  style: GoogleFonts.abel(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              content: Text("Ao sair as alterações serão perdidas.",
+                  style: GoogleFonts.abel(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               backgroundColor: Colors.deepPurple,
               actions: [
                 FlatButton(
-                  child: Text("Cancelar", style: GoogleFonts.abel(color: Colors.white)),
-                  onPressed: (){
+                  child: Text("Cancelar",
+                      style: GoogleFonts.abel(color: Colors.white)),
+                  onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
                 FlatButton(
-                  child: Text("Sim", style: GoogleFonts.abel(color: Colors.white)),
-                  onPressed: (){
+                  child:
+                      Text("Sim", style: GoogleFonts.abel(color: Colors.white)),
+                  onPressed: () {
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
                 )
               ],
             );
-          }
-      );
+          });
       return Future.value(false);
     }
     return Future.value(true);
   }
-
 }
