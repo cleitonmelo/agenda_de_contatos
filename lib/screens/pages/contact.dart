@@ -91,7 +91,7 @@ class _ContactPageState extends State<ContactPage> {
             GestureDetector(
               child: Style.imageCircle(image: contact.image),
               onTap: () {
-                _picker.getImage(source: ImageSource.camera).then((file) {
+                _picker.getImage(source: ImageSource.gallery).then((file) {
                   if (file != null) {
                     setState(() {
                       contact.image = file.path;

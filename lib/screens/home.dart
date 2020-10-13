@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(10.0),
         itemCount: contacts.length,
         itemBuilder: (context, index) {
-          return cardContact(context, contacts[index], showOption);
+            return cardContact(context, contacts[index], showOption);
         });
   }
 
