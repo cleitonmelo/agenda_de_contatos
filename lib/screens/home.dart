@@ -3,6 +3,7 @@ import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/repository/contact_repository.dart';
 import 'package:agenda_de_contatos/screens/card/card.dart';
 import 'package:agenda_de_contatos/screens/pages/contact.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,8 +26,17 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contatos",
-            style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Icon(Icons.person_outline, size: 30.0),
+            ),
+            Text("Contatos",
+                style: GoogleFonts.abel(color: Colors.white, fontSize: 30.0))
+          ],
+        ),
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
         actions: [

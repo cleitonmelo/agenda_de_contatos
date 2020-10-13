@@ -3,6 +3,7 @@ import 'package:agenda_de_contatos/screens/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ContactPage extends StatefulWidget {
   final Contact contact;
@@ -17,6 +18,14 @@ class _ContactPageState extends State<ContactPage> {
   bool _edited = false;
   Contact contact;
   final nameFocus = FocusNode();
+  final emailFocus = FocusNode();
+
+  final maskPhoneFormatter = MaskTextInputFormatter(
+    mask: '(##) #####-####',
+    filter: {
+      "#": RegExp(r'[0-9]'),
+    },
+  );
 
   final ImagePicker _picker = ImagePicker();
 
@@ -127,6 +136,7 @@ class _ContactPageState extends State<ContactPage> {
               padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _emailController,
+                focusNode: emailFocus,
                 decoration:
                     Style.inputDecoration(text: "Email", icon: Icons.email),
                 style: GoogleFonts.abel(color: Colors.white, fontSize: 20.0),
@@ -140,6 +150,7 @@ class _ContactPageState extends State<ContactPage> {
               padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _phoneController,
+                inputFormatters: [maskPhoneFormatter],
                 decoration: Style.inputDecoration(
                     text: "Telefone", icon: Icons.phone_android),
                 style: GoogleFonts.abel(color: Colors.white, fontSize: 20.0),
@@ -154,14 +165,25 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
+  // @TODO Rever este codigo muito << if >>
   void _onPressed() {
-    if (_isValidName()) {
+    if (_isNameValid() && _isEmailValid()) {
       Navigator.pop(context, contact);
+    }else{
+      if(! _isNameValid() ){
+        FocusScope.of(context).requestFocus(nameFocus);
+      }
+      if(! _isEmailValid() ){
+        FocusScope.of(context).requestFocus(emailFocus);
+      }
     }
-    FocusScope.of(context).requestFocus(nameFocus);
   }
 
-  bool _isValidName() {
+  bool _isEmailValid(){
+    return _emailController.text != null && _emailController.text.isNotEmpty;
+  }
+
+  bool _isNameValid() {
     return _nameController.text != null && _nameController.text.isNotEmpty;
   }
 
