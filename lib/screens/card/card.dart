@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 Widget cardContact(BuildContext context, Contact contact, onTap) {
   return GestureDetector(
-      onTap: (){
-        onTap(contact: contact);
+      onTap: () {
+        onTap(context, contact);
       },
       child: Container(
         child: Card(
@@ -24,7 +24,7 @@ Widget cardContact(BuildContext context, Contact contact, onTap) {
                 ListTile(
                   leading: contact.image == null
                       ? Image.asset("images/person.png", color: Colors.white30)
-                      : FileImage(File(contact.image)),
+                      : Image.file(File(contact.image), fit: BoxFit.cover),
                   title: Text(contact.name,
                       style: GoogleFonts.abel(
                           fontWeight: FontWeight.bold,

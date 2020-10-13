@@ -6,6 +6,7 @@ import 'package:agenda_de_contatos/screens/home.dart';
 import 'package:agenda_de_contatos/screens/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContactPage extends StatefulWidget {
   final Contact contact;
@@ -82,6 +83,16 @@ class _ContactPageState extends State<ContactPage> {
           children: [
             GestureDetector(
               child: imageForm(),
+              onTap: (){
+                ImagePicker.pickImage(source: ImageSource.camera).then((file) {
+                  if(file != null){
+                    setState(() {
+                      contact.image = file.path;
+                    });
+                  }
+                  return;
+                });
+              },
             ),
             Card(
                 color: Colors.deepPurpleAccent,
@@ -101,10 +112,10 @@ class _ContactPageState extends State<ContactPage> {
       height: 200.0,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          image: DecorationImage(
-              image: contact.image == null
+          image: contact.image == null
                   ? AssetImage("images/person.png")
-                  : FileImage(File(contact.image)))),
+                  : Image.file(File(contact.image), fit: BoxFit.cover),
+      ),
     );
   }
 

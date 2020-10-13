@@ -48,9 +48,9 @@ class ContactRepository{
     return maps.length > 0 ? Contact.fromMap(maps.first) : null;
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete() async {
     Database db = await connection.database;
     return await db.delete(ContactMigration.TABLE_NAME,
-        where: "${ContactMigration.ID_COLUMN} = ?", whereArgs: [id]);
+        where: "${ContactMigration.ID_COLUMN} = ?", whereArgs: [contact.id]);
   }
 }

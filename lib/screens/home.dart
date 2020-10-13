@@ -1,11 +1,10 @@
-import 'package:agenda_de_contatos/helpers/contact_helper.dart';
-import 'package:agenda_de_contatos/helpers/page_helper.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/repository/contact_repository.dart';
 import 'package:agenda_de_contatos/screens/card/card.dart';
 import 'package:agenda_de_contatos/screens/pages/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -48,8 +47,56 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(10.0),
         itemCount: contacts.length,
         itemBuilder: (context, index) {
-          return cardContact(context, contacts[index], showPageContact);
+          return cardContact(context, contacts[index], showOption);
         });
+  }
+
+  void showOption(BuildContext context, Contact contact){
+    showModalBottomSheet(context: context, builder: (context){
+      return BottomSheet(
+          onClosing: (){},
+          builder: (context){
+            return Container(
+              color: Colors.deepPurple,
+              padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton(
+                      child: Icon(Icons.edit, color: Colors.white),
+                      onPressed: (){
+                        Navigator.pop(context);
+                        showPageContact(contact: contact);
+                      },
+                    ),
+                    FlatButton(
+                      child: Icon(Icons.call, color: Colors.white),
+                      onPressed: (){
+                        launch("tel: ${contact.phone}");
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                      child: Icon(Icons.delete, color: Colors.white),
+                      onPressed: (){
+                        deleteContact(context, contact);
+                      },
+                    ),
+                  ],
+                ),
+            );
+          });
+    });
+  }
+
+  void deleteContact(BuildContext context, Contact contact) async{
+    if( contact != null ){
+      await ContactRepository(contact: contact).delete();
+    }
+    setState(() {
+      ContactRepository().fetchAll().then((values) => contacts = values);
+    });
+    Navigator.pop(context);
   }
 
   void showPageContact({Contact contact}) async{
