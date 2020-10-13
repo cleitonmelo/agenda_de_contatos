@@ -1,4 +1,3 @@
-import 'package:agenda_de_contatos/screens/home.dart';
 import 'package:agenda_de_contatos/screens/loading.dart';
 import 'package:flutter/material.dart';
 

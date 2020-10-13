@@ -1,4 +1,0 @@
-enum OrderOptions{
-  orderAsc,
-  orderDesc,
-}

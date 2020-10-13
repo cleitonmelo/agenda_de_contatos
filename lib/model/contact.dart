@@ -1,5 +1,10 @@
 import 'package:agenda_de_contatos/migration/create_contact.dart';
 
+enum OrderOptions{
+  orderAsc,
+  orderDesc,
+}
+
 class Contact {
   int id;
   String name;

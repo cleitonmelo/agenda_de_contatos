@@ -1,4 +1,3 @@
-import 'package:agenda_de_contatos/enum/ContactOrder.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/repository/contact_repository.dart';
 import 'package:agenda_de_contatos/screens/card/card.dart';
