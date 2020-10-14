@@ -1,3 +1,4 @@
+import 'package:agenda_de_contatos/migration/create_contact.dart';
 import 'package:agenda_de_contatos/model/contact.dart';
 import 'package:agenda_de_contatos/repository/contact_repository.dart';
 import 'package:agenda_de_contatos/screens/card/card.dart';
@@ -133,11 +134,7 @@ class _HomeState extends State<Home> {
           builder: (context) => ContactPage(contact: contact),
         ));
     if (contactEditor != null) {
-      if (contact != null) {
-        await ContactRepository(contact: contactEditor).update();
-      } else {
-        await ContactRepository(contact: contactEditor).save();
-      }
+      await ContactRepository(contact: contactEditor).save();
     }
     setState(() {
       ContactRepository().fetchAll().then((values) => contacts = values);
@@ -155,8 +152,6 @@ class _HomeState extends State<Home> {
                 (a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
         break;
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

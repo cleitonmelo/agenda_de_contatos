@@ -1,25 +1,18 @@
-class ContactMigration{
-  static const TABLE_NAME = "contacts";
+import 'package:agenda_de_contatos/model/contact.dart';
 
-  static const ID_COLUMN = "id";
-  static const NAME_COLUMN = "name";
-  static const EMAIL_COLUMN = "email";
-  static const PHONE_COLUMN = "phoned";
-  static const IMAGE_COLUMN = "src_image";
+class ContactMigration{
 
   static getAllColumns(){
-    return [
-      ID_COLUMN, NAME_COLUMN, EMAIL_COLUMN, PHONE_COLUMN, IMAGE_COLUMN
-    ];
+    return Contact.getAllColumns();
   }
 
   static final createTable = '''
-    CREATE TABLE $TABLE_NAME (
-      $ID_COLUMN INTEGER PRIMARY KEY AUTOINCREMENT,
-      $NAME_COLUMN TEXT not null,
-      $EMAIL_COLUMN TEXT not null,
-      $PHONE_COLUMN TEXT,
-      $IMAGE_COLUMN TEXT
+    CREATE TABLE ${Contact.getTable()} (
+      ${Contact.getColumnId()} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${Contact.getColumnName()} TEXT not null,
+      ${Contact.getColumnEmail()} TEXT not null,
+      ${Contact.getColumnPhone()} TEXT,
+      ${Contact.getColumnImage()} TEXT
     )
     ''';
 }
